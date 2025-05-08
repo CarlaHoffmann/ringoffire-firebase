@@ -8,7 +8,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+// import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Firestore } from '@angular/fire/firestore';
+import { collection } from "firebase/firestore";
 
 @Component({
   selector: 'app-game',
@@ -25,14 +27,16 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   game!: Game;
 
-  constructor(private firestore: AngularFirestore, public dialog: MatDialog) {
+  constructor(private firestore: Firestore, public dialog: MatDialog) {
     this.newGame();
     
   }
 
   ngOnInit(): void {
-    this.firestore.collection('items').valueChanges()
-      .subscribe((game) => { console.log('Game update', game); });
+    const Ref = collection(this.firestore, 'items').valueChanges()
+      .subscribe((game) => { 
+        console.log('Game update', game);
+      });
   }
 
   newGame() {
