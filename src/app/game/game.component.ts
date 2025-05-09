@@ -9,7 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -39,9 +39,14 @@ export class GameComponent implements OnInit {
       });
   }
 
-  newGame() {
+  async newGame() {
     this.game = new Game();
     // console.log(this.game);
+    const Ref = collection(this.firestore, 'games');
+    let item = { text: 'Hallo' };
+    await addDoc(Ref, item). catch(
+      (err) => {console.log(err)}
+    )
   }
 
   takeCard() {
