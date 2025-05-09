@@ -9,8 +9,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Firestore } from '@angular/fire/firestore';
-import { collection } from "firebase/firestore";
+import { Firestore, collection, collectionData } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-game',
@@ -33,7 +32,8 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const Ref = collection(this.firestore, 'items').valueChanges()
+    const Ref = collection(this.firestore, 'games');
+    collectionData(Ref)
       .subscribe((game) => { 
         console.log('Game update', game);
       });
