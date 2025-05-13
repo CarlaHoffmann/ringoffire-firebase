@@ -32,8 +32,8 @@ export class GameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const Ref = collection(this.firestore, 'games');
-    collectionData(Ref)
+    const ref = collection(this.firestore, 'games');
+    collectionData(ref)
       .subscribe((game) => { 
         console.log('Game update', game);
       });
@@ -42,11 +42,8 @@ export class GameComponent implements OnInit {
   async newGame() {
     this.game = new Game();
     // console.log(this.game);
-    const Ref = collection(this.firestore, 'games');
-    let item = { text: 'Hallo' };
-    await addDoc(Ref, item). catch(
-      (err) => {console.log(err)}
-    )
+    const ref = collection(this.firestore, 'games');
+    await addDoc(ref, this.game.toJson());
   }
 
   takeCard() {
