@@ -9,7 +9,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
 // import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Firestore, addDoc, collection, collectionData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -26,24 +27,36 @@ export class GameComponent implements OnInit {
   currentCard: string = '';
   game!: Game;
 
-  constructor(private firestore: Firestore, public dialog: MatDialog) {
-    this.newGame();
+  constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) {
     
   }
 
   ngOnInit(): void {
-    const ref = collection(this.firestore, 'games');
-    collectionData(ref)
-      .subscribe((game) => { 
-        console.log('Game update', game);
+    this.newGame();
+    // const ref = collection(this.firestore, 'games');
+    this.route.params.subscribe((params) => {
+      console.log(params['id']);
+      // collectionData(ref)
+      // .subscribe((game) => { 
+      //   console.log('Game update', game);
+      // });
+
+      const docRef = doc(this.firestore, 'games', params['id']);
+      docData(docRef).subscribe((game: any) => {
+        console.log('Gameupdate', game);
+        this.game.currentPlayer = game['currentPlayer'] ?? 0;
+        this.game.stack = game['stack'] ?? [];
+        this.game.playedCards = game['playedCards'] ?? [];
+        this.game.players = game['players'] ?? [];
       });
+    });
   }
 
   async newGame() {
     this.game = new Game();
     // console.log(this.game);
-    const ref = collection(this.firestore, 'games');
-    await addDoc(ref, this.game.toJson());
+    // const ref = collection(this.firestore, 'games');
+    // await addDoc(ref, this.game.toJson());
   }
 
   takeCard() {
