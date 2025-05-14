@@ -64,10 +64,11 @@ export class GameComponent implements OnInit {
       this.game.pickCardAnimation = true;
       console.log('New card:' + this.game.currentCard);
       console.log('Game is', this.game);
-      this.saveGame();
 
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; // Rest-Opperator: 3/3 = 1 Rest 0;
+      this.saveGame();
+      
       setTimeout(()=>{
         this.game.playedCards.push(this.game.currentCard);
         this.game.pickCardAnimation = false;
