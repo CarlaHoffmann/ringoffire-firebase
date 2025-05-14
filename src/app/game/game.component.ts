@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-// import { GamedataService } from '../gamedata.service';
 import { Game } from '../../models/game';
 import { PlayerComponent } from "../player/player.component";
 import { MatButtonModule } from '@angular/material/button';
@@ -8,8 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { GameInfoComponent } from '../game-info/game-info.component';
-// import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Firestore, addDoc, collection, collectionData, doc, docData } from '@angular/fire/firestore';
+import { Firestore, addDoc, collection, collectionData, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -23,9 +21,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GameComponent implements OnInit {
   pickCardAnimation = false;
-  // gamedata = inject(GamedataService);
   currentCard: string = '';
   game!: Game;
+  gameId!: string;
 
   constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) {
     
@@ -36,12 +34,13 @@ export class GameComponent implements OnInit {
     // const ref = collection(this.firestore, 'games');
     this.route.params.subscribe((params) => {
       console.log(params['id']);
+      this.gameId = params['id'];
       // collectionData(ref)
       // .subscribe((game) => { 
       //   console.log('Game update', game);
       // });
 
-      const docRef = doc(this.firestore, 'games', params['id']);
+      const docRef = doc(this.firestore, 'games', this.gameId);
       docData(docRef).subscribe((game: any) => {
         console.log('Gameupdate', game);
         this.game.currentPlayer = game['currentPlayer'] ?? 0;
@@ -55,7 +54,6 @@ export class GameComponent implements OnInit {
   async newGame() {
     this.game = new Game();
     // console.log(this.game);
-    
   }
 
   takeCard() {
@@ -64,12 +62,14 @@ export class GameComponent implements OnInit {
       this.pickCardAnimation = true;
       console.log('New card:' + this.currentCard);
       console.log('Game is', this.game);
+      this.saveGame();
 
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; // Rest-Opperator: 3/3 = 1 Rest 0;
       setTimeout(()=>{
         this.game.playedCards.push(this.currentCard);
         this.pickCardAnimation = false;
+        this.saveGame();
       }, 1000)
     }
   }
@@ -79,12 +79,27 @@ export class GameComponent implements OnInit {
     //   , {
     //   data: {name: this.name, animal: this.animal},
     // }
-  );
+    );
 
     dialogRef.afterClosed().subscribe((name: string) => {
       if(name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
       }
     });
+  }
+
+  // updateGame() {
+  //   const docRef = doc(this.firestore, 'games', this.gameId);
+  //   docData(docRef).update(this.game.toJson());
+  // }
+  async saveGame() {
+    const docRef = doc(this.firestore, 'games', this.gameId);
+    // try {
+      await updateDoc(docRef, this.game.toJson());
+    //   console.log('Spiel erfolgreich aktualisiert!');
+    // } catch (err) {
+    //   console.error('Fehler beim Aktualisieren:', err);
+    // }
   }
 }
