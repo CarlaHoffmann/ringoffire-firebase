@@ -55,8 +55,7 @@ export class GameComponent implements OnInit {
   async newGame() {
     this.game = new Game();
     // console.log(this.game);
-    // const ref = collection(this.firestore, 'games');
-    // await addDoc(ref, this.game.toJson());
+    
   }
 
   takeCard() {
