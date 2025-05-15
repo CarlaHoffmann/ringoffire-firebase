@@ -10,6 +10,7 @@ import { GameInfoComponent } from '../game-info/game-info.component';
 import { Firestore, addDoc, collection, collectionData, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 import { PlayerMobileComponent } from "../player-mobile/player-mobile.component";
+import { EditPlayerComponent } from '../edit-player/edit-player.component';
 
 @Component({
   selector: 'app-game',
@@ -24,6 +25,7 @@ export class GameComponent implements OnInit {
   // currentCard: string = '';
   game!: Game;
   gameId!: string;
+  gameOver = false;
 
   constructor(private route: ActivatedRoute, private firestore: Firestore, public dialog: MatDialog) {
     
@@ -46,7 +48,8 @@ export class GameComponent implements OnInit {
         this.game.currentPlayer = game['currentPlayer'] ?? 0;
         this.game.stack = game['stack'] ?? [];
         this.game.playedCards = game['playedCards'] ?? [];
-        this.game.players = game['players'] ?? [];
+        this.game.players = game['players'] ?? []; 
+        this.game.playerImages = game['playerImages'] ?? []; 
         this.game.pickCardAnimation = game['pickCardAnimation'] ?? [];
         this.game.currentCard = game['currentCard'] ?? [];
       });
@@ -59,7 +62,9 @@ export class GameComponent implements OnInit {
   }
 
   takeCard() {
-    if(!this.game.pickCardAnimation) {
+    if(this.game.stack.length == 0) {
+      this.gameOver = true;
+    } else if(!this.game.pickCardAnimation) {
       this.game.currentCard = this.game.stack.pop() || ''; // pop() nimmt den letzten Wert im Array
       this.game.pickCardAnimation = true;
       console.log('New card:' + this.game.currentCard);
@@ -77,6 +82,27 @@ export class GameComponent implements OnInit {
     }
   }
 
+  editPlayer(playerId: number) {
+    console.log('edit player', playerId);
+
+    const dialogRef = this.dialog.open(EditPlayerComponent);
+    dialogRef.afterClosed().subscribe((change: string) => {
+      if(change) {
+        if(change == 'DELETE') {
+          this.game.players.splice(playerId, 1);
+          this.game.playerImages.splice(playerId, 1);
+        } else {
+          console.log('received change', change);
+          this.game.playerImages[playerId] = change;
+          // if(name && name.length > 0) {
+          //   this.game.players.push(name);
+          // }
+        }
+        this.saveGame();
+      }
+    });
+  }
+
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent
     //   , {
@@ -87,15 +113,12 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe((name: string) => {
       if(name && name.length > 0) {
         this.game.players.push(name);
+        this.game.playerImages.push('firefighter.png');
         this.saveGame();
       }
     });
   }
 
-  // updateGame() {
-  //   const docRef = doc(this.firestore, 'games', this.gameId);
-  //   docData(docRef).update(this.game.toJson());
-  // }
   async saveGame() {
     const docRef = doc(this.firestore, 'games', this.gameId);
     // try {

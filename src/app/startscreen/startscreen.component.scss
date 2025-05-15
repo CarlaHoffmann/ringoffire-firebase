@@ -110,10 +110,6 @@ a {
         left: 20px;
         right: 20px;
         bottom: 58px;
-        // top: 0px;
-        // left: 0px;
-        // right: 0px;
-        // bottom: 0px;
         z-index: 2;
         // cursor: pointer;
         &:hover {
@@ -125,6 +121,13 @@ a {
             
         }
         &:hover ~ p {  
+            transform: scale(1.1);
+        }
+    }
+
+    @media(max-width: 720px) {
+        .start-btn-img {  
+            filter: brightness(1.5);
             transform: scale(1.1);
         }
     }

@@ -14,23 +14,19 @@ import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-dialog-add-player',
+  selector: 'app-edit-player',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatDialogTitle,
-    MatDialogContent,
-    MatDialogActions,
-    MatDialogClose],
-  templateUrl: './dialog-add-player.component.html',
-  styleUrl: './dialog-add-player.component.scss'
+      MatDialogContent,
+      MatDialogActions,
+      MatDialogClose],
+  templateUrl: './edit-player.component.html',
+  styleUrl: './edit-player.component.scss'
 })
-export class DialogAddPlayerComponent {
-  name: string = '';
+export class EditPlayerComponent {
+  allProfilePics = ['female-blue.png', 'male-blue.png', 'female-red.png', 'male-red.png', 'female-yellow.png', 'male-yellow.png', 'girl-red.png', 'boy-grey.png', 'firefighter.png', 'bear.png', 'bird.png', 'chicken.png', 'mouse.png', 'ox.png'];
 
-  constructor(public dialogRef: MatDialogRef<DialogAddPlayerComponent>) {}
-  // constructor(
-  //   public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
-  //   @Inject(MAT_DIALOG_DATA) public data: DialogData,
-  // ) {}
+  constructor(public dialogRef: MatDialogRef<EditPlayerComponent>) {}
 
   onNoClick() {
     this.dialogRef.close();

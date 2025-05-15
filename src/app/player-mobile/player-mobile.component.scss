@@ -1,5 +1,5 @@
 .player {
-    width: 60px;
+    width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -8,7 +8,14 @@
     border-bottom-left-radius: 60px;
     border-bottom-right-radius: 60px;
     span {
+        width: 60px;
         font-size: 16px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        text-align: center;
+        text-overflow: ellipsis; // drei Punkte bei overflow 
+        white-space: nowrap;
+        overflow: hidden;
     }
 }
 
@@ -17,19 +24,19 @@
     height: 35px;
     // object-fit: cover;
     border-radius: 100%;
-    background-color: rgb(166, 179, 246);
+    // background-color: rgb(166, 179, 246);
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 2px;
     img {
         // width: 35px;
-        height: 25px;
+        height: 40px;
         object-fit: cover;
-        // border-radius: 100%;
+        border-radius: 100%;
         // border: solid black;
         // border-radius: 10px;
-        filter: opacity(0.4);
+        // filter: opacity(0.6);
     }
 }
 

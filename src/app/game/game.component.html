@@ -1,25 +1,30 @@
 <!-- <p>game works!</p> -->
 @for (player of game.players; track player; let i = $index) {
-      <app-player class="player-info hide-mobile" [ngStyle]="{'top': 100 + (i*90) + 'px'}" 
-      [activePlayer]="i == game.currentPlayer"
-      [name]="player"></app-player>
+    <app-player (click)="editPlayer(i)" class="player-info hide-mobile" [ngStyle]="{'top': 24 + (i*70) + 'px'}" 
+        [activePlayer]="i == game.currentPlayer"
+        [name]="player" [image]="game.playerImages[i]">
+    </app-player>
 }
 
-<div class="scroll-container hide-desktop">
+<div class="scroll-container">
     @for (player of game.players; track player; let i = $index) {
-        <app-player-mobile [ngStyle]="{'top': 0 + 'px', 'left': 5 + (i*65) + 'px'}" 
-        [activePlayer]="i == game.currentPlayer"
-        [name]="player"></app-player-mobile>
-  }
+        <app-player-mobile (click)="editPlayer(i)" class="hide-desktop" [ngStyle]="{'top': 0 + 'px', 'left': 5 + (i*65) + 'px'}" 
+            [activePlayer]="i == game.currentPlayer"
+            [name]="player" [image]="game.playerImages[i]">
+        </app-player-mobile>
+    }
 </div>
 <!-- <app-player *ngFor="let player of game.players" class="player-info" [ngStyle]="{'top': (i*4) + 'px'}"></app-player> -->
 
-<div class="gamescreen">
-    
+<div *ngIf="gameOver" class="game-over">
+    <img src="./assets/img/game-over.jpg" alt="">
+</div>
+
+<div *ngIf="!gameOver" class="gamescreen">
     <div class="card-stack">
         @for (c of [1,2,3,4]; track c; let i = $index) {
             <img [ngStyle]="{'right': (i*4) + 'px', 'bottom': -148+(i*4) + 'px'}"
-              src="assets/img/cards/card_cover.png" alt="">
+                src="assets/img/cards/card_cover.png" alt="">
         }
         <img (click)="takeCard()" class="top-card" style="right: 16px; bottom: -132px;"
             src="assets/img/cards/card_cover.png" alt="">
@@ -34,8 +39,8 @@
     </div>
 </div>
 
-<app-game-info [card]="game.currentCard" class="card-info"></app-game-info>
+<app-game-info *ngIf="!gameOver" [card]="game.currentCard" class="card-info"></app-game-info>
 
-<button (click)="openDialog()" class="add-btn" mat-fab color="primary">
+<button *ngIf="!gameOver" (click)="openDialog()" class="add-btn" mat-fab color="primary">
     <mat-icon>add</mat-icon>
   </button>
