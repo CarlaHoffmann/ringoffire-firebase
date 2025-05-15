@@ -1,0 +1,38 @@
+.player {
+    width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background-color: rgb(185, 184, 182, 0.8);
+    border-bottom-left-radius: 60px;
+    border-bottom-right-radius: 60px;
+    span {
+        font-size: 16px;
+    }
+}
+
+.player-img-frame {
+    width: 35px;
+    height: 35px;
+    // object-fit: cover;
+    border-radius: 100%;
+    background-color: rgb(166, 179, 246);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2px;
+    img {
+        // width: 35px;
+        height: 25px;
+        object-fit: cover;
+        // border-radius: 100%;
+        // border: solid black;
+        // border-radius: 10px;
+        filter: opacity(0.4);
+    }
+}
+
+.active-player {
+    background-color: rgb(255, 183, 75) !important;
+}

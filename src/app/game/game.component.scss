@@ -79,4 +79,25 @@ body {
     bottom: 32px;
     left: 80px;
     right: 120px;
+
+    @media(max-width: 720px) {
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+.scroll-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    display: flex;
+    // gap: 6px;
+    overflow-x: auto;
+    // overflow-y: hidden;
+
+    app-player-mobile {
+        margin-left: 6px;
+    }
 }

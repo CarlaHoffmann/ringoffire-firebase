@@ -9,13 +9,13 @@ import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player
 import { GameInfoComponent } from '../game-info/game-info.component';
 import { Firestore, addDoc, collection, collectionData, doc, docData, updateDoc } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
+import { PlayerMobileComponent } from "../player-mobile/player-mobile.component";
 
 @Component({
   selector: 'app-game',
   standalone: true,
-  imports: [CommonModule, PlayerComponent, GameInfoComponent, MatButtonModule, 
-    MatIconModule, MatDialogModule, DialogAddPlayerComponent
-  ],
+  imports: [CommonModule, PlayerComponent, GameInfoComponent, MatButtonModule,
+    MatIconModule, MatDialogModule, DialogAddPlayerComponent, PlayerMobileComponent],
   templateUrl: './game.component.html',
   styleUrl: './game.component.scss'
 })
@@ -68,7 +68,7 @@ export class GameComponent implements OnInit {
       this.game.currentPlayer++;
       this.game.currentPlayer = this.game.currentPlayer % this.game.players.length; // Rest-Opperator: 3/3 = 1 Rest 0;
       this.saveGame();
-      
+
       setTimeout(()=>{
         this.game.playedCards.push(this.game.currentCard);
         this.game.pickCardAnimation = false;

@@ -1,9 +1,17 @@
 <!-- <p>game works!</p> -->
 @for (player of game.players; track player; let i = $index) {
-      <app-player class="player-info" [ngStyle]="{'top': 100 + (i*90) + 'px'}" 
+      <app-player class="player-info hide-mobile" [ngStyle]="{'top': 100 + (i*90) + 'px'}" 
       [activePlayer]="i == game.currentPlayer"
       [name]="player"></app-player>
 }
+
+<div class="scroll-container hide-desktop">
+    @for (player of game.players; track player; let i = $index) {
+        <app-player-mobile [ngStyle]="{'top': 0 + 'px', 'left': 5 + (i*65) + 'px'}" 
+        [activePlayer]="i == game.currentPlayer"
+        [name]="player"></app-player-mobile>
+  }
+</div>
 <!-- <app-player *ngFor="let player of game.players" class="player-info" [ngStyle]="{'top': (i*4) + 'px'}"></app-player> -->
 
 <div class="gamescreen">
