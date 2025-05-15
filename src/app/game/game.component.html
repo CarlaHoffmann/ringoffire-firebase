@@ -20,20 +20,21 @@
     <img src="./assets/img/game-over.jpg" alt="">
 </div>
 
+
 <div *ngIf="!gameOver" class="gamescreen">
     <div class="card-stack">
         @for (c of [1,2,3,4]; track c; let i = $index) {
-            <img [ngStyle]="{'right': (i*4) + 'px', 'bottom': -148+(i*4) + 'px'}"
+            <img [ngStyle]="{'right': (i*4) + 'px', 'bottom': -160+(i*4) + 'px'}"
                 src="assets/img/cards/card_cover.png" alt="">
         }
-        <img (click)="takeCard()" class="top-card" style="right: 16px; bottom: -132px;"
+        <img (click)="takeCard()" class="top-card" style="right: 16px; bottom: -144px;"
             src="assets/img/cards/card_cover.png" alt="">
 
         @for (card of game.playedCards; track card) {
             <img class="played-card" src="assets/img/cards/{{ card }}.png" alt="">
         }
 
-        <img (click)="takeCard()" *ngIf="game.pickCardAnimation" class="pick-card" style="right: 16px; bottom: -132px;"
+        <img (click)="takeCard()" *ngIf="game.pickCardAnimation" class="pick-card" style="right: 16px; bottom: -144px;"
             src="assets/img/cards/{{ game.currentCard }}.png" alt="">
         <!-- <img *ngFor="let c of [1,2,3,4,5]; let i = index" [ngStyle]="{'right': i + 'px'}" src="./assets/img/cards/card_cover.png" alt=""> -->
     </div>
@@ -43,4 +44,7 @@
 
 <button *ngIf="!gameOver" (click)="openDialog()" class="add-btn" mat-fab color="primary">
     <mat-icon>add</mat-icon>
-  </button>
+</button>
+
+<!-- damit es keine Lade verzögerung gibt laden wir das nächste Bild -->
+<img class="preloadImage" src="assets/img/cards/{{ game.stack[game.stack.length-1] }}.png" alt="">

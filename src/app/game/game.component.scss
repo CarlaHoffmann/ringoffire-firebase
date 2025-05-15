@@ -65,7 +65,7 @@ body {
 .played-card {
     right: 16px;
     bottom: -132px;
-    transform: scale(1.05) translateX(140px) translateY(-180px) rotate(-10deg);
+    transform: scale(1.05) translateX(140px) translateY(-160px) rotate(-16deg);
 }
 
 .add-btn {
@@ -119,4 +119,10 @@ app-player, app-player-mobile {
         width: 100vw;
         height: 100vh;
     }
+}
+
+.preloadImage {
+    opacity: 0;
+    position: absolute;
+    z-index: -999;
 }
